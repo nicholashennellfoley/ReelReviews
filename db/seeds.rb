@@ -1,4 +1,6 @@
 require_relative '../lib/create_place_helper'
+require_relative '../app/services/s3_service'
+# reauire URI
 
 def create_users
   User.create(
@@ -9,49 +11,54 @@ def create_users
   puts 'Created User Nick'
 
   puts 'Created All Users'
+
+  User.all
 end
 
-create_users
+def get_videos
+  s3_client = Aws::S3::Client.new
+  s3_manager = S3Manager.new(s3_client)
+  
+  m3u8_videos = []
+  videos_with_places = []
+  place_id_extraction_regex = /- (.+)/
 
-def list_cloudinary_videos(current_place)
-  Cloudinary::Api.resources(
-    resource_type: :video,
-    type: :upload,
-    prefix: "#{current_place}/"
-  )['resources']
+  all_objects = s3_manager.list_objects(ENV['S3_DESTINATION_BUCKET'])
+
+  all_objects.each do |object|
+    m3u8_videos << object.key.slice(0, object.key.length - 5) if object.key.end_with?('.m3u8')
+  end
+
+  m3u8_videos.each_with_index do |key_string, idx|
+    if idx != m3u8_videos.length - 1 && m3u8_videos[idx + 1].include?(key_string)
+      videos_with_places << { video_id: key_string + '.m3u8', place_id: key_string.match(place_id_extraction_regex)[1] }
+    end
+  end
+
+  videos_with_places
 end
 
-def add_posts(place, current_place, users)
-  videos = list_cloudinary_videos(current_place)
-  videos.each_with_index do |video, k|
-    Post.create(
+def create_posts_and_places(videos_with_places, users)
+  puts "#{videos_with_places.size} post to do"
+  videos_with_places.each_with_index do |video, idx|
+    puts "Creating place for post #{idx + 1}"
+    place = create_place_helper(video[:place_id])
+    post = Post.create(
       user_id: users.sample.id,
       place_id: place.id,
       place_rating: rand(1..5),
-      video_url: video['url'],
-      video_public_id: video['public_id']
+      video_url: ENV['CLOUDFRONT_BASE_URL'] + video[:video_id],
+      video_public_id: video[:video_id]
     )
-    puts "Saved Post #{k + 1} of #{videos.size} to #{place.name}"
+    puts "Saved post #{idx + 1} of #{videos_with_places.size} to #{place.name}"
+    puts post.persisted?
+    puts post.errors.full_messages
+
   end
 end
 
-users = User.all
+users = create_users
+videos_with_places = get_videos
+create_posts_and_places(videos_with_places, users)
 
-# Get place folders from Cloudinary that contain videos, only dev environment
-user_folders = Cloudinary::Api.subfolders('development', options = {})['folders']
-google_place_id_extraction_regex = /- (.+)/
-
-user_folders.each_with_index do |user_folder, user_index|
-  puts "Processing user #{user_index + 1} of #{user_folder.size} (#{user_folder['name']})"
-  place_folders = Cloudinary::Api.subfolders("development/#{user_folder['name']}", options = {})['folders']
-  place_folders.each_with_index do |place_folder, place_index|
-    puts "Creating Place #{place_index + 1} of #{place_folders.size} places from #{user_folder['name']}"
-
-    # Get the place details from the API, using the Google Place ID extracted from the folder name
-    google_place_id = place_folder['name'][google_place_id_extraction_regex, 1]
-
-    place = create_place_helper(google_place_id)
-
-    add_posts(place, "development/#{user_folder['name']}/#{place_folder['name']}", users)
-  end
-end
+puts Post.all
