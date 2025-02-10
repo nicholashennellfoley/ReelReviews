@@ -7,6 +7,7 @@
     <link rel="manifest" href="<%= asset_path 'manifest' %>">
 
     <%= stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css' %>
+    <%= stylesheet_link_tag 'https://vjs.zencdn.net/8.16.1/video-js.css' %>
     <%= stylesheet_link_tag 'favourites', media: 'all' %>
 
     <%= stylesheet_link_tag 'https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css' %>
@@ -21,8 +22,6 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
 
-    <%= stylesheet_link_tag "https://unpkg.com/cloudinary-video-player@1.9.9/dist/cld-video-player.light.min.css" %>
-    <%= javascript_include_tag "https://unpkg.com/cloudinary-video-player@1.9.9/dist/cld-video-player.light.min.js" %>
     <%= render 'layouts/ios_pwa_links' %>
   </head>
 

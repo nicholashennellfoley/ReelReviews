@@ -1,6 +1,7 @@
  <p class="post-username"> <%= post.user.username %> </p>
-<video id ="post_<%= post.id %>_video" class="video cld-video-player">
-</video>
+<video-js id ="post_<%= post.id %>_video" class="video-js">
+    <source src="<%= post.video_url %>">
+</video-js>
 
 <style>
   .post-username{
@@ -9,12 +10,12 @@
     z-index: 4;
     padding-left: 1.1rem;
   }
-  .cld-video-player .vjs-control-bar {
+  /* .cld-video-player .vjs-control-bar {
     margin-bottom: 0;
     padding-bottom: 0;
   }
 
-  /* Add padding to progress control */
+  // Add padding to progress control
   .cld-video-player .vjs-control-bar .vjs-progress-control {
     padding-left: 3rem;
     padding-right: 3rem;
@@ -35,17 +36,15 @@
 
   .cld-video-player .vjs-control-bar .vjs-volume-panel {
   display: none !important;
-}
+} */
 
 </style>
 
+<script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script>
 <script>
- var cloudinary_video_player = cloudinary.videoPlayer("post_<%= post.id %>_video",{
-    cloud_name: 'dfmuyxggs',
-    bigPlayButton: false,
-    fluid: false,
-    muted: true,
-    showLogo: false,
+  var vjs_player = videojs("post_<%= post.id %>_video", {
+    width: document.querySelector('.place').clientWidth,
+    height: document.querySelector('.place').clientHeight,
     controls: true,
     // controlBar: {
     //   playToggle: false,
@@ -61,7 +60,7 @@
     //   }
     // },
     hideContextMenu: true,
-    autoplay: true,
+    autoplay: 'muted',
     loop: true,
     colors: {
       base: 'transparent', // Changes the controls bar and information bar to be transparent
@@ -71,7 +70,4 @@
     // To prevent fullscreen on iOS
     playsinline: true
   });
-
-  // Crop video to fill screen (well, the place container)
-  cloudinary_video_player.source("<%= post.video_public_id %>", { transformation: { width: document.querySelector('.place').clientWidth, height: document.querySelector('.place').clientHeight, crop: 'fill' }});
 </script>

@@ -48,7 +48,7 @@ a {
   color: white;
 }
 
-.video {
+.video-js {
   height: calc(100dvh - 39px);
   width: 100vw;
 }
