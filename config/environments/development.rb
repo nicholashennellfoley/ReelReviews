@@ -73,4 +73,9 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Sprockets will generate a Source Map for each asset.
+  # This allows debugging each file individually in browser's developer tools.
+  config.assets.debug = true
+
 end

@@ -43,8 +43,7 @@
 <script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script>
 <script>
   var vjs_player = videojs("post_<%= post.id %>_video", {
-    width: document.querySelector('.place').clientWidth,
-    height: document.querySelector('.place').clientHeight,
+    height: document.querySelector('.main-content-container').clientHeight,
     controls: true,
     // controlBar: {
     //   playToggle: false,
