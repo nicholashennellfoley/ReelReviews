@@ -346,7 +346,6 @@ DEPENDENCIES
   cloudinary
   debug
   devise
-  dotenv
   dotenv-rails
   faker
   geocoder
