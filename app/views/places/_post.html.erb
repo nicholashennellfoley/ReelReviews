@@ -1,5 +1,5 @@
  <p class="post-username"> <%= post.user.username %> </p>
-<video-js id ="post_<%= post.id %>_video" class="video-js">
+<video-js id ="post_<%= post.id %>_video_main_page" class="video-js">
     <source src="<%= post.video_url %>">
 </video-js>
 
@@ -40,9 +40,8 @@
 
 </style>
 
-<script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script>
 <script>
-  var vjs_player = videojs("post_<%= post.id %>_video", {
+  var vjs_player = videojs("post_<%= post.id %>_video_main_page", {
     height: document.querySelector('.main-content-container').clientHeight,
     controls: true,
     // controlBar: {
