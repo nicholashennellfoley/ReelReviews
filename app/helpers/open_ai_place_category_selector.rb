@@ -1,4 +1,4 @@
-module OpenAIPlaceCategorySelector
+module OpenAiPlaceCategorySelector
   require 'openai'
 
   def ai_select_category(google_place_type, place_name)
