@@ -1,6 +1,6 @@
 require 'openai'
 
-class OpenAIPlaceCategorySelector
+class AiPlaceCategorySelector
   def initialize
   end
   

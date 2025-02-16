@@ -1,4 +1,4 @@
-require_relative 'open_ai_place_category_selector'
+require_relative 'ai_place_category_selector'
 require 'net/http'
 require 'json'
 
@@ -32,7 +32,7 @@ class CreatePlaceService
     longitude: place_details["geometry"]["location"]['lng'],
     # Need a separate API call to get the place photo
     image_url: place_image_url,
-    category: OpenAIPlaceCategorySelector.new.ai_select_category(place_details['types'][0], place_details['name']),
+    category: AiPlaceCategorySelector.new.ai_select_category(place_details['types'][0], place_details['name']),
     opening_hours: concatenate_opening_hours(place_details['opening_hours']),
     google_place_id: @google_place_id
     )
