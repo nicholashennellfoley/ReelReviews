@@ -1,6 +1,8 @@
-module OpenAiPlaceCategorySelector
-  require 'openai'
+require 'openai'
 
+class OpenAIPlaceCategorySelector
+  def initialize
+  end
   def ai_select_category(google_place_type, place_name)
     open_ai_client = OpenAI::Client.new(access_token: ENV['OPENAI_ACCESS_TOKEN'])
 

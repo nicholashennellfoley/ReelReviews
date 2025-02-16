@@ -1,5 +1,5 @@
-require_relative '../lib/create_place_helper'
-require_relative '../app/services/s3_service'
+require_relative '../app/services/create_place_service'
+require_relative '../app/services/s3_manager'
 # reauire URI
 
 def create_users
@@ -42,7 +42,7 @@ def create_posts_and_places(videos_with_places, users)
   puts "#{videos_with_places.size} post to do"
   videos_with_places.each_with_index do |video, idx|
     puts "Creating place for post #{idx + 1}"
-    place = create_place_helper(video[:place_id])
+    place = CreatePlaceService.new(video[:place_id]).run
     post = Post.create(
       user_id: users.sample.id,
       place_id: place.id,
