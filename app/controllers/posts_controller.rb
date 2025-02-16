@@ -1,4 +1,4 @@
-require_relative '../../lib/create_place_helper'
+require_relative '../helpers/create_place_helper'
 
 class PostsController < ApplicationController
   before_action :set_post, only: [:show]
