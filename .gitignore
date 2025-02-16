@@ -41,3 +41,5 @@
 .env*
 
 /aws/*
+
+/config/credentials/production.key
