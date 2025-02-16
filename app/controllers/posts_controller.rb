@@ -1,4 +1,4 @@
-require_relative '../helpers/create_place_helper'
+require_relative '../services/create_place_service'
 
 class PostsController < ApplicationController
   before_action :set_post, only: [:show]
@@ -13,7 +13,7 @@ class PostsController < ApplicationController
   end
 
   def create
-    @place = create_place_helper(params[:google_place_id])
+    @place = CreatePlaceService.new(params[:google_place_id]).run
 
     @post = Post.new(
       user_id: current_user.id,
