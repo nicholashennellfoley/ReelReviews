@@ -84,3 +84,4 @@ production:
   database: ReelReviews_production
   username: ReelReviews
   password: <%= ENV["REELREVIEWS_DATABASE_PASSWORD"] %>
+  host: db
